@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    main { margin-top: 100px; }
+  </style>
+</head>
+
+<body>
+  <main>
+  </main>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    console.clear();
+
+    var data = [
+      { name: 'Sara'    , score: 50 },
+      { name: 'John'    , score: 60 },
+      { name: 'Kim'     , score: 80 },
+      { name: 'Patricia', score: 30 },
+      { name: 'Michael' , score: 10 }
+    ];
+
+    const selections = d3.select('main')    // container
+      .selectAll('div')                     // elements
+      .data(data)                           // updata
+
+    selections.enter()                      // EnterNode
+      .append('div')
+      .style('width', (d)=>d.score+'px' )
+      .style('height', '10px' )
+      .style('background-color', 'red')
+      .style('margin-top', function(d,i,els){
+        console.log(this)
+      })
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

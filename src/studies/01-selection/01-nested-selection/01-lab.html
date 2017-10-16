@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    main { margin-top: 50px; }
+  </style>
+</head>
+
+<body>
+  <main>
+<table>
+  <thead>
+    <tr><td>  A</td><td>  B</td><td>  C</td><td>  D</td></tr>
+  </thead>
+  <tbody>
+    <tr><td>  0</td><td>  1</td><td>  2</td><td>  3</td></tr>
+    <tr><td>  4</td><td>  5</td><td>  6</td><td>  7</td></tr>
+    <tr><td>  8</td><td>  9</td><td> 10</td><td> 11</td></tr>
+    <tr><td> 12</td><td> 13</td><td> 14</td><td> 15</td></tr>
+  </tbody>
+</table>
+  </main>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    console.clear();
+
+    var tr = d3.selectAll("tr")
+    // console.log(tr.nodes())
+    var td = tr.selectAll("td");
+    var tdnodes = td.nodes()[0];
+    var td_docQ = document.querySelectorAll('td')[0];
+
+    var l1 = Object.keys(tdnodes)
+    var l2 = Object.keys(td_docQ)
+
+    console.log(tdnodes, l1)
+    console.log(td_docQ, l2)
+
+    td.style("color", function(d, i, j) {
+      // console.log(j)
+      const out = i ? null : 'red'
+      return out
+    });
+  </script
+</body>
+
+</html>

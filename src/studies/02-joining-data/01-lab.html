@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    main { margin-top: 100px; }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div>Sam</div>
+    <div>Bob</div>
+  </main>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+
+    debugger;
+
+    var data1 = [
+      { name: 'Sam'  },
+      { name: 'John' },
+      { name: 'Kim'  },
+      { name: 'Jim'  },
+      { name: 'Mike' }
+    ];
+
+    const selection1 = d3
+      .select('main')
+      .selectAll('div')
+      .data(data1, function(d){ return d?d.name:this.innerText} );
+
+    selection1
+      .enter()
+      .append('div')
+      .text(d=>d.name)
+
+    selection1
+      .exit()
+      .remove()
+
+    debugger;
+
+    var data2 = [
+      { name: 'Kim' },
+      { name: 'Syd' },
+      { name: 'Pat' }
+    ];
+
+    const selection2 = d3
+      .select('main')
+      .selectAll('div')
+      .data(data2, function(d){ return d?d.name:this.innerText} );
+
+    selection2
+      .enter()
+      .append('div')
+      .text(d=>d.name)
+
+    selection2
+      .exit()
+      .remove()
+
+    debugger;
+
+    var data3 = [
+      { name: 'Syd' },
+      { name: 'Tim' },
+      { name: 'Radu' }
+    ];
+
+    const selection3 = d3
+      .select('main')
+      .selectAll('div')
+      .data(data3, function(d){ return d?d.name:this.innerText} );
+
+    selection3
+      .enter()
+      .append('div')
+      .text(d=>d.name)
+
+    selection3
+      .exit()
+      .remove()
+
+  </script>
+
+</body>
+
+</html>

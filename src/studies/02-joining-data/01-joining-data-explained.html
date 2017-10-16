@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    main { margin-top: 100px; }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div>Sam</div>
+    <div>Bob</div>
+  </main>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    console.clear();
+    let msg = '';
+
+    // file:./joint-diagram.png
+    // https://bost.ocks.org/mike/join/
+
+    const getNodesInnerText = (selections) =>
+      _(selections.nodes()).reduce( (acc,n) =>`${acc}'${n.innerText}' ` , '')
+
+    const getDataByProp = (selections, propName) =>
+      _(selections.data()).reduce( (acc,d)=>`${acc}'${d[propName]}' `, '')
+
+
+    let selections;
+
+    const container = d3.select('main')
+    console.log('container:', container.node())   // <main>...</main>
+
+    var data = [
+      { name: 'Sam' },
+      { name: 'John' },
+      { name: 'Kim' },
+      { name: 'Jim' },
+      { name: 'Mike' }
+    ];
+
+    console.log('data: ', _(data).map('name').value().reduce( (acc,d)=>`${acc}'${d}' `, ''));
+
+    const elements  = container.selectAll('div');
+    console.log('elements: ', getNodesInnerText(elements)) // Bob Sara
+
+    debugger;
+
+    const update = selections = elements.data(data, function(d, i) {     // [div]
+      // console.log(i, d, self)
+      const name = d ? d.name : this.innerText
+      return name;
+    });
+    console.log('update:', getNodesInnerText(update))
+
+    debugger;
+
+    const exit = selections.exit()
+    console.log('exit: ', getNodesInnerText(exit));
+
+    debugger;
+
+    const removed =exit.remove();
+    console.log('removed: ', getNodesInnerText(removed))
+
+    debugger;
+
+    const enter = selections.enter()
+    console.log('enter (nodesInnerText): ', getNodesInnerText(enter));
+    console.log('enter (data): ', getDataByProp(enter, 'name'));
+
+    const newElements = enter.append('div')
+    console.log('newElements (nodesInnerText): ', getNodesInnerText(newElements));
+    console.log('newElements (data): ', getDataByProp(newElements, 'name'));
+
+    newElements.text( d => d.name );
+
+    debugger;
+
+    const data2 = [
+      { name: 'Sara' },
+      { name: 'Apollo' },
+      { name: 'Zeus' }
+    ];
+
+    const elements2  = container.selectAll('div'); //  [div, div]
+    console.log('elements2: ', getNodesInnerText(elements2))
+
+    // debugger;
+
+    let selections2;
+    const update2 = selections2 = elements2.data(data2, d => d ? d.name : this.innerText);
+    console.log('update2:', update2.nodes())   // [div]
+
+    // debugger;
+
+    const enter2 = selections2.enter()
+    console.log('enter2: ', enter2.nodes());  // [EnterNode, EnterNode, EnterNode, EnterNode]
+
+    // debugger;
+
+    const exit2 = selections2.exit()
+    console.log('exit2: ', exit2.nodes());   // [div]
+
+    // debugger;
+
+    const removed2 =exit2.remove();          // [div]
+    console.log('removed2: ', removed2.nodes())
+
+    // debugger;
+
+    const nextElements2 = enter.append('div')
+
+    // debugger;
+
+    nextElements2.text(function(d){
+      return d.name;
+    });
+  </script>
+
+</body>
+
+</html>

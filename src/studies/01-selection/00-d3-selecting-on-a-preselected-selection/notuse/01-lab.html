@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    #container {
+      margin-top: 50px;
+    }
+    .l0 {
+      overflow: auto;
+      width: 70px;
+      outline: solid yellow 1px;
+    }
+    .l1 {
+      float: right;
+      width: 50px;
+      outline: solid blue 1px;
+    }
+    .l2 {
+      float: right;
+      width: 30px;
+      height: 20px;
+      outline: solid green 1px;
+    }
+    /* .l0.b .l1.a .l2.b > span { */
+    /*   color: red; */
+    /* } */
+  </style>
+</head>
+
+<body>
+
+    <div class="l0 a">
+
+      <span>a</span>
+
+      <div class="l1 a">
+
+        <span>a</span>
+
+        <div class="l2 a"><span>a</span></div>
+        <div class="l2 b"><span>b</span></div>
+      </div>
+      <div class="l1 b">
+
+        <span>b</span>
+
+        <div class="l2 a"><span>a</span></div>
+        <div class="l2 b"><span>b</span></div>
+      </div>
+
+    </div>
+
+    <div class="l0 b">
+
+      <span>b</span>
+      <div class="l1 a">
+        <span>a</span>
+        <div class="l2 a"><span>a</span></div>
+        <div class="l2 b"><span>b</span></div>
+      </div>
+      <div class="l1 b">
+        <span>b</span>
+        <div class="l2 a"><span>a</span></div>
+        <div class="l2 b"><span>b</span></div>
+      </div>
+    </div>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    console.clear();
+    const container = document.getElementById('container');
+
+    const S = d3.selectAll('div > span')
+    S.style('color','red')
+  </script
+</body>
+
+</html>

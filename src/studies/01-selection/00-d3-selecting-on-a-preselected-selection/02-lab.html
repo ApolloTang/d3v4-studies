@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    main { margin-top: 50px; }
+    div { width: 220px; padding: 10px; }
+    div + div { margin-top: 10px; }
+    div > div { margin-left: 100px; width: 100px; background: white; }
+  </style>
+</head>
+
+<body>
+  <main>
+  <div data-gen="female">
+    parent female
+    <div data-gen="male">child male</div>
+    <div data-gen="female">child female</div>
+    <div data-gen="male">child male</div>
+  </div>
+  <div data-gen="male">
+    parent male
+    <div data-gen="male">  child male  </div>
+    <div data-gen="female">child female</div>
+    <div data-gen="male">  child male  </div>
+  </div>
+  <div data-gen="female">
+    parent female
+    <div data-gen="male">child male</div>
+    <div data-gen="male">child male</div>
+    <div data-gen="female">child female</div>
+  </div>
+  </main>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    console.clear();
+
+    const male = '[data-gen="male"]'
+    const female = '[data-gen="female"]'
+
+    const SL1 = d3.selectAll(female)
+    SL1.style('background', 'red')
+
+    const SL2 = SL1.selectAll(female)
+    SL2.style('background', 'yellow')
+  </script
+</body>
+
+</html>
