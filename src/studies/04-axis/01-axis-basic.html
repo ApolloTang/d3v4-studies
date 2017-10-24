@@ -1,0 +1,44 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container { width: 100%; height: 300px; }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    dim = 300;
+    const container = document.getElementById('container');
+
+    const svg = d3.select(container).append('svg').attr('width',dim).attr('height',dim)
+
+    const scale = d3.scaleLinear()
+        .domain([0,100])
+        .range([dim,0]) // note reverse the order b/c y coor increse from top to bottom
+
+    const yAxis = d3.axisRight(scale);
+
+    const g1 = svg.append('g');
+    const g2 = svg.append('g').attr('transform', 'translate(100)')
+
+    // a and b are almost equivalent except the return
+    const a = g1.call(yAxis)  // return selection so you can do more stuff
+    const b =yAxis(g2)        // return void 0
+
+    console.log(a.node()) // g
+    console.log(b) // void 0
+
+  </script>
+</body>
+
+</html>
