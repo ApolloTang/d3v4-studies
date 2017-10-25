@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container { width: 100%; height: 300px; }
+    .legend {fill:red; font-size:30px; stroke:red}
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    dim = 300;
+    const container = document.getElementById('container');
+
+    const svg = d3.select(container).append('svg').attr('width',dim*4).attr('height',dim)
+
+    const scale = d3.scaleLinear()
+      .domain([0,100])
+      .range([dim,0]) // note reverse the order b/c y coor increse from top to bottom
+
+    const g1 = svg.append('g')
+    const yAxis = d3.axisRight(scale).ticks(1);
+    g1.call(yAxis);
+    g1.append('text').text(1).attr('class','legend').attr('y', dim)
+
+    // do 19 of the above with ticks(2) to ticks(20)
+    const w = window;
+    const nnn = 20 - 1; let nn = nnn;
+    while(nn--) {
+      const n = nnn - nn + 1;
+      w[`g${n}`] = svg.append('g').attr('transform', `translate(${50*(n-1)})`);
+      w[`yAxis${n}`] = d3.axisRight(scale).ticks(n)
+      w[`g${n}`].call(w[`yAxis${n}`]);
+      w[`g${n}`].append('text').text(n).attr('class','legend').attr('y', dim)
+    }
+
+  </script>
+</body>
+
+</html>
