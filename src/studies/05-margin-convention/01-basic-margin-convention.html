@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+    // Margin configuration configuration
+    const svgDim = {w:400, h:200};
+    const svgMar = {t:10, r:10, b:10, l:10};
+    const stageDim = {
+      w: svgDim.w - svgMar.r - svgMar.l,
+      h: svgDim.h - svgMar.t - svgMar.b
+    };
+
+    // Chart container
+    const container = d3.select('#container');
+    container
+      .styles({
+        height: svgDim.h+'px',
+        width: svgDim.w+'px',
+        background: 'hsl(240, 100%, 90%)' // blue-light
+      })
+
+    // Svg container
+    const svg = container.append('svg');
+    svg
+      .attr('width', svgDim.w)
+      .attr('height', svgDim.h)
+      .style('outline', 'blue solid 1px')
+
+    // Stage container
+    const stage = svg.append('g');
+    stage
+      .attr('transform', `translate(${svgMar.l}, ${svgMar.t})`)
+
+    // Stage Background
+    const stageBackground = stage.append('rect');
+    stageBackground
+      .styles({
+        width: stageDim.w,
+        height: stageDim.h,
+        fill: 'hsl(120, 20%, 90%)' // green-light
+      });
+  </script>
+</body>
+
+</html>
