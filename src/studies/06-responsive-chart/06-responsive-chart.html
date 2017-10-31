@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @aspectRatio: 0.5;
+    .chart {
+      width: 100%;
+      padding-top: calc(~"100% * "@aspectRatio);
+      position: relative;
+      &__inner {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: hsl(300, 20%, 70%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chart">
+    <div class="chart__inner">
+    </div>
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+
+    const aspectRatio = 1;
+    const svgDim = {};
+    svgDim.w = 1000;
+    svgDim.h = svgDim.w * aspectRatio;
+
+    // Svg container
+    const svg = d3.select('.chart__inner').append('svg');
+    svg
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('viewBox', `0 0 ${svgDim.w} ${svgDim.h}`)
+      .style('outline', 'red solid 2px')
+
+    // Viewbox boundary
+    const viewBoxPath = svg.append('path')
+      .attr('d',`M 0,0 L ${svgDim.w},0 L ${svgDim.w},${svgDim.h} L 0,${svgDim.h} Z`)
+      .attr('stroke', 'black')
+      .attr('stroke-width', '10')
+      .attr('fill', 'none');
+
+    // Circle object
+    const circle = svg.append('circle')
+      .attr('cx', svgDim.w/2)
+      .attr('cy', svgDim.h/2)
+      .attr('r', svgDim.w/10 )
+      .attr('fill', 'hsl(120, 20%, 70%)')
+
+  </script>
+</body>
+
+</html>
