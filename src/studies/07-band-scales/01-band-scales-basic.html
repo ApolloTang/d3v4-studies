@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container { width: 200px; height: 100px; }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+    // https://github.com/d3/d3-scale#band-scales
+
+    const domain = ['a','b','c','d'];
+
+    const band = d3.scaleBand()
+      .domain(domain)
+      .range([0,100])
+
+    const bandToObj = domain.reduce((acc,d)=>{
+      acc[d] = band(d);
+      return acc;
+    }, {});
+
+    console.table(bandToObj)
+
+    const bandwidth =  band.bandwidth()
+    console.log('bandwidth: ', bandwidth)
+  </script>
+</body>
+
+</html>

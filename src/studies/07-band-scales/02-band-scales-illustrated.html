@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container { width: 200px; height: 100px; }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+    // https://github.com/d3/d3-scale#band-scales
+
+    const container = document.getElementById('container');
+
+    const domain = ['a','b','c','d'];
+
+    const band = d3.scaleBand()
+      .domain(domain)
+      .range([0,200])
+
+    band.paddingInner(.3)
+    band.paddingOuter(.1)
+    band.align(.5) // default = 0.5
+
+    const svgDim = {w:200, h:100};
+    const svg = d3.select(container).append('svg')
+    svg
+      .attr('width',svgDim.w)
+      .attr('height',svgDim.h)
+      .style('outline', 'blue 1px solid')
+
+    const update = d3.select(svg.node()).selectAll('rect').data(domain);
+    const rects = update.enter().append('rect');
+
+    rects
+      .attr('transform', d=>`translate(${band(d)})`)
+      .attr('height', svgDim.h)
+      .attr('width', band.bandwidth)
+      .attr('fill', 'none')
+      .attr('stroke', 'red')
+
+  </script>
+</body>
+
+</html>
