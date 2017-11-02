@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    #container {
+      width: 100%;
+      outline: red solid 1px;
+    }
+    .b {
+      color: hsl(0,100%,70%)
+    }
+    .a {
+      color: hsl(120,100%,70%)
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    foo
+  </div>
+  <div class="b a">
+    bar
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script>
+    const container = document.getElementById('container');
+    const scaleOrdinal = d3.scaleOrdinal()
+      .domain(['safe','warning','danger'])
+      .range(['green', 'orange', 'red'])
+      .unknown('I dont understand');
+
+    console.table( {
+      'scaleOrdinal("safe")': scaleOrdinal("safe"),
+      'scaleOrdinal("warning")': scaleOrdinal("warning"),
+      'scaleOrdinal("danger")': scaleOrdinal("danger"),
+      'scaleOrdinal("banana")': scaleOrdinal("banana")
+    });
+  </script>
+</body>
+
+</html>
