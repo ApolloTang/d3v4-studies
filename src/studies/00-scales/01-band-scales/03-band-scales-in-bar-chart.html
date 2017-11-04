@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 lab</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container { width: 500px; height: 200px; }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+    // https://github.com/d3/d3-scale#band-scales
+
+    const container = document.getElementById('container');
+
+    const dataJson = [
+      {a: 100},
+      {b: 300},
+      {c: 700},
+      {d: 500},
+      {e: 200}
+    ];
+
+    const data = _(dataJson).map(
+      d => ({
+        'key': Object.keys(d)[0],
+        'value' : Object.values(d)[0]
+      })
+    ).value();
+
+    const svgDim = {w:500, h:200};
+    const svg = d3.select(container).append('svg')
+    svg
+      .attr('width',svgDim.w)
+      .attr('height',svgDim.h)
+      .style('outline', 'blue 1px solid')
+
+    const scaleX = d3.scaleBand()
+      .domain( _(data).map( d=>d.key ).value() )
+      .range( [0,svgDim.w] )
+      .padding(.1)
+
+    const scaleY = d3.scaleLinear()
+      .domain([ 0, d3.max( _(data).map( d=>d.value ).value() ) ])
+      .range( [ 0, svgDim.h ] )
+
+    const rects = d3
+      .select(svg.node())
+      .selectAll('rect')
+      .data(data)
+      .enter()
+      .append('rect')
+
+    rects
+      .attr('width', scaleX.bandwidth() )
+      .attr('height', d=>scaleY(d.value))
+      .attr('transform', d=>{
+        const x = scaleX(d.key);
+        const y = svgDim.h - scaleY(d.value);
+        return `translate(${x},${y})`
+      })
+      .attr('fill', 'hsl(120, 50%, 70%)')
+
+  </script>
+</body>
+
+</html>

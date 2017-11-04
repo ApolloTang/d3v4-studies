@@ -21,6 +21,7 @@
     // https://github.com/d3/d3-scale#band-scales
 
     const domain = ['a','b','c','d'];
+    // const domain = ['b','a','c','d']; // the caculated band will map according to the order of domain
 
     const band = d3.scaleBand()
       .domain(domain)
