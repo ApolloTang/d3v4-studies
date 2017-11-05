@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>margin-convention responsive</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @aspectRatio: 0.5;
+    @width: 100%;
+    @height: 100%*@aspectRatio;
+
+    .chart-wrapper {
+      padding-top: @height;
+      width: @width;
+      position: relative;
+    }
+    .chart {
+      background: hsl(240, 30%, 90%);
+      position: absolute;
+      top:0; left:0;
+      width: 100%; height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chart-wrapper">
+    <div class="chart">
+      Chart has not being loaded
+    </div>
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/chance/chance.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+
+  // Configuration
+  const aspectRatio = 0.5
+  const svgW = 500;
+  const svgMarg = { t:10, r:10, b:10, l:10 }
+
+  // Dimension calculation
+  const svgDim = { w:svgW, h:svgW*aspectRatio };
+  const stageDim = {
+    w: svgDim.w - svgMarg.l - svgMarg.r,
+    h: svgDim.h - svgMarg.t - svgMarg.b
+  };
+
+  // Chart container
+  const container = d3.select('.chart')
+  container.text('')
+
+  // Svg container
+  const svg =  container.append('svg');
+  svg
+    .styles({
+      width: '100%',
+      height: '100%',
+    })
+    .attr('viewBox', `0 0 ${svgDim.w} ${svgDim.h}`);
+
+  // Stage
+  const stage = svg.append('g');
+    stage.attr('transform', `translate(${svgMarg.l}, ${svgMarg.t})`)
+
+  const stageBg = stage.append('rect');
+  stageBg
+    .styles({
+      width: stageDim.w, height: stageDim.h,
+      fill: 'hsl(120, 30%, 90%)'
+    });
+
+  </script>
+</body>
+
+</html>
