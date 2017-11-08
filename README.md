@@ -1,5 +1,5 @@
 
-## A play ground for D3.js
+## D3.js studies
 
 First install browser-sync:
 
