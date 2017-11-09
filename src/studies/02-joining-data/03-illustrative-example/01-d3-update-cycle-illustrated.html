@@ -38,6 +38,11 @@
     <script src="http://localhost:8001/js/lib/jquery-1.11.0.js"></script>
     <script src="http://localhost:8001/js/lib/d3-3.4.13.js"></script>
 
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/chance/chance.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
     <script>
         var data = [
             [ {id:'a', value:'red' },  {id:'b', value:'red'   }, {id:'c', value:'red'   }                                                 ],
@@ -58,18 +63,18 @@
 
             var joined = boxs.data( dataSet, function(d){ return d.id; });
 
-            joined.style('background', 'magenta');                                               if (i!== 0) {$('.msg').append('magenta = doms joined w new dataSet['+i+']<br\>'); debugger; }
+            joined.style('background', 'magenta');                                               if (i!== 0) {d3.select('.msg').html('magenta = doms joined w new dataSet['+i+']<br\>'); debugger; }
 
             var entered = joined.enter();
 
             entered.append('div').classed('box', true);
 
             joined.style('background', function(d){ var value = d.value; return d.value;  })
-                .text(function(d){return d.id});                                                $('.msg').append(dataSet[0].value + ' = doms updated w new dataSet['+i+']<br/>'); debugger;
+                .text(function(d){return d.id});                                                d3.select('.msg').html(dataSet[0].value + ' = doms updated w new dataSet['+i+']<br/>'); debugger;
 
             var exist = joined.exit();
 
-            exist.style('background', 'white').style('color', 'black');                         if (i!==0) { $('.msg').append('white = doms to be exited <br/>'); debugger; }
+            exist.style('background', 'white').style('color', 'black');                         if (i!==0) { d3.select('.msg').html('white = doms to be exited <br/>'); debugger; }
 
             exist.remove()
         }
