@@ -19,19 +19,22 @@
   <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
   <script>
 
-    const scale = d3.scaleLinear().domain([0,10]).range([0,500]);
+  // d3-scale
+  // Ref: https://github.com/d3/d3-scale
 
-    data = [];
+  const scaleY = d3.scaleLinear().domain([0,20000]).range([0,300]);
+  let income = 10000;
+  console.log(income, '-->', scaleY(income));
+  income = 20000;
+  console.log(income, '-->', scaleY(income));
 
-    let count = 11;
 
-    while(--count) {
-      data.push(count);
-    };
-    data.reverse();
+  const scaleX = d3.scaleLinear().domain([2000, 2005]).range([0, 500]);
+  let year = 2000;
+  console.log(year, '-->', scaleX(year));
+  year = 2001;
+  console.log(year, '-->', scaleX(year));
 
-    console.log(data)
-    console.log(data.map(scale))
   </script>
 </body>
 
