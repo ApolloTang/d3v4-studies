@@ -22,18 +22,19 @@
   // d3-scale
   // Ref: https://github.com/d3/d3-scale
 
-  const scaleY = d3.scaleLinear().domain([0,20000]).range([0,300]);
+  // scale: dataToCoord
+  const dataToCoordY = d3.scaleLinear().domain([0,20000]).range([0,300]);
   let income = 10000;
-  console.log(income, '-->', scaleY(income));
+  console.log(income, '-->', dataToCoordY(income));
   income = 20000;
-  console.log(income, '-->', scaleY(income));
+  console.log(income, '-->', dataToCoordY(income));
 
 
-  const scaleX = d3.scaleLinear().domain([2000, 2005]).range([0, 500]);
+  const dataToCoordX = d3.scaleLinear().domain([2000, 2005]).range([0, 500]);
   let year = 2000;
-  console.log(year, '-->', scaleX(year));
+  console.log(year, '-->', dataToCoordX(year));
   year = 2001;
-  console.log(year, '-->', scaleX(year));
+  console.log(year, '-->', dataToCoordX(year));
 
   </script>
 </body>
