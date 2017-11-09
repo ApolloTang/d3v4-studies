@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>d3 iteration</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  </style>
+</head>
+
+<body>
+  <button class="get-data">getdata</button>
+  <div class="chart"></div>
+
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/chance/chance.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+
+    const data = [];
+
+    function getData(data) {
+      let isInit = !data.length;
+      const getDatum = ()=>({
+        id:_.uniqueId(),
+        x:chance.integer({min:0, max:100}),
+        y:chance.integer({min:0, max:100}),
+      })
+
+      let count = 5;
+      while(count--) {
+        if (isInit) {
+          data[count] = getDatum();
+        } else if (chance.coin() === 'heads') {
+          data[count] = getDatum();
+        }
+      };
+      return data;
+    }
+
+    d3.select('.get-data').on('click', ()=>{
+      console.table(getData(data))
+      render(data)
+    })
+
+    const scaleX = d3.scaleLinear().domain([0,100]).range([0,500]);
+    const scaleY = d3.scaleLinear().domain([0,100]).range([0,200]);
+
+    const chart = d3.select('.chart')
+      .styles( {
+        'position': 'relative',
+        'width': '500px',
+        'height': '200px',
+        'outline': '1px solid red',
+        'overflow': 'hidden'
+      });
+
+    function render(data) {
+
+    const update = d3
+      .select('.chart')
+      .selectAll('div')
+      .data(data, (d=>d.id))
+
+    const enter = window.enter = update.enter();
+    const exit = window.exit = update.exit()
+
+      enter
+        .append('div')
+        .styles({
+          position: 'absolute',
+          width: '3px',
+          height: '3px',
+          background: 'blue'
+        })
+        .style( 'bottom', d=>scaleY(d.y)+'px' )
+        .style( 'left', '-500px' )
+        .transition()
+        .duration(1000)
+        .style( 'left', d=>scaleX(d.x)+'px' )
+
+      exit
+        .transition()
+        .duration(1000)
+        .style('left', '1000px')
+        .remove()
+    }
+
+
+  </script>
+</body>
+
+</html>
