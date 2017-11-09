@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>d3 data join</title>
+  <style type="text/less">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  </style>
+</head>
+
+<body>
+  <div class="chart">
+    Chart has not being loaded
+  </div>
+  <script src="http://localhost:9091/less/dist/less.js"></script>
+  <script src="http://localhost:9091/lodash/lodash.js"></script>
+  <script src="http://localhost:9091/chance/chance.js"></script>
+  <script src="http://localhost:9091/d3/d3.js"></script>
+  <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
+  <script>
+
+    //@@ Prepare Data
+    const data = [];
+    let count = 10;       // let count = 100;
+    while (count--) {
+      datum = {x:count, y:count};
+          // datum = {x:chance.integer({min:0, max:50}), y:chance.integer({min:0, max:50})};
+      data.push(datum)
+    }
+    data.reverse();
+    console.table(data)
+
+
+    //@@ Define scale
+    const scaleX = d3.scaleLinear().domain([0,9]).range([0,500]);
+    const scaleY = d3.scaleLinear().domain([0,9]).range([0,200]);
+
+        // const scaleX = d3.scaleLinear().domain([0,d3.max(data, d=>d.x)]).range([0,500]);
+        // const scaleY = d3.scaleLinear().domain([0,d3.max(data, d=>d.y)]).range([0,200]);
+
+    //@@ Chart container
+    const chart = d3.select('.chart');
+
+    chart.text('');
+
+    chart
+      .styles({
+        position: 'relative',
+        width: '500px',
+        height: '200px',
+        outline: '1px solid red'
+      })
+
+    // // @@ Do scatter points
+    // data.forEach(d=>{
+    //   chart.append('div')
+    //     .styles({
+    //       position: 'absolute',
+    //       left: scaleX(d.x)+'px',
+    //       bottom: scaleY(d.y)+'px',
+    //       width: '3px',
+    //       height: '3px',
+    //       background: 'blue',
+    //     });
+    // });
+
+    //@@ Do scatter points with d3 data join
+    const points = d3.select('.chart')
+      .selectAll('div')
+      .data(data)
+      .enter()
+      .append('div')
+
+    points
+      .styles({
+        position: 'absolute',
+        width: '3px',
+        height: '3px',
+        background: 'blue',
+      })
+      .style('left', d=>scaleX(d.x)+'px')
+      .style('bottom', d=>scaleY(d.y)+'px')
+
+  </script>
+</body>
+
+</html>
+
+
