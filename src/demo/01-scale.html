@@ -19,20 +19,19 @@
   <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
   <script>
 
-    const scaleX = d3.scaleLinear().domain([0,10]).range([0,500]);
-    const scaleY = d3.scaleLinear().domain([0,10]).range([0,500]);
+    const scale = d3.scaleLinear().domain([0,10]).range([0,500]);
 
     data = [];
 
     let count = 11;
+
     while(--count) {
-      const coordinate = count;
-      const datum = {x:count, y:count};
-      data.push(datum);
+      data.push(count);
     };
     data.reverse();
 
-
+    console.log(data)
+    console.log(data.map(scale))
   </script>
 </body>
 
