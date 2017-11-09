@@ -19,44 +19,50 @@
   <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
   <script>
 
-    // prepare data
-    data = [];
-    let count = 11;
-    while(count--) {
-      const datum = {x:count, y:count};
-      data.push(datum);
-    };
+    //@@ Prepare Data
+    const data = [];
+    let count = 10;       // let count = 100;
+    while (count--) {
+      datum = {x:count, y:count};
+          // datum = {x:chance.integer({min:0, max:50}), y:chance.integer({min:0, max:50})};
+      data.push(datum)
+    }
     data.reverse();
+    console.table(data)
 
-    const scaleX = d3.scaleLinear().domain([0,10]).range([0,500]);
-    const scaleY = d3.scaleLinear().domain([0,10]).range([0,200]);
 
-    const chart = d3.select('.chart')
+    //@@ Define scale
+    const scaleX = d3.scaleLinear().domain([0,9]).range([0,500]);
+    const scaleY = d3.scaleLinear().domain([0,9]).range([0,200]);
+
+        // const scaleX = d3.scaleLinear().domain([0,d3.max(data, d=>d.x)]).range([0,500]);
+        // const scaleY = d3.scaleLinear().domain([0,d3.max(data, d=>d.y)]).range([0,200]);
+
+    //@@ Chart container
+    const chart = d3.select('.chart');
 
     chart.text('');
 
     chart
-      .styles( {
-        'position': 'relative',
-        'width': '500px',
-        'height': '200px',
-        'outline': '1px solid red'
-      });
+      .styles({
+        position: 'relative',
+        width: '500px',
+        height: '200px',
+        outline: '1px solid red'
+      })
 
+    // @@ Do scatter points
     data.forEach(d=>{
-      chart
-        .append('div')
-          .styles({
-            position: 'absolute',
-            left: scaleX(d.x)+'px',
-            bottom: scaleY(d.y)+'px',
-            width: '3px',
-            height: '3px',
-            background: 'blue'
-          })
+      chart.append('div')
+        .styles({
+          position: 'absolute',
+          left: scaleX(d.x)+'px',
+          bottom: scaleY(d.y)+'px',
+          width: '3px',
+          height: '3px',
+          background: 'blue',
+        });
     });
-
-
 
   </script>
 </body>
