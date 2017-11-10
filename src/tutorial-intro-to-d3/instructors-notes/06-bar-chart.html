@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>bar chart</title>
+  <title>Scatter HTML</title>
   <style type="text/less">
     * { margin: 0; padding: 0; box-sizing: border-box; }
   </style>
@@ -12,154 +12,184 @@
   <div class="chart">
     Chart has not being loaded
   </div>
-  <div class="legend">
+  <div class="tooltip">
   </div>
-
   <script src="http://localhost:9091/less/dist/less.js"></script>
   <script src="http://localhost:9091/lodash/lodash.js"></script>
   <script src="http://localhost:9091/chance/chance.js"></script>
   <script src="http://localhost:9091/d3/d3.js"></script>
   <script src="http://localhost:9091/d3/d3-selection-multi.v1.js"></script>
   <script>
+    //Ref: http://bl.ocks.org/binaworks/9dce0a385915e8953a45cc6be7fbde42
 
-  // Svg configuration
-  const svgDim = { w:500, h:200 };
-  const svgMarg = { t:20, r:20, b:40, l:30 }
-  const stageDim = {
-    w: svgDim.w - svgMarg.l - svgMarg.r,
-    h: svgDim.h - svgMarg.t - svgMarg.b
-  };
+    // ---------------------------------------------------------------
+    //@@ svg configuration
+    const svgDim = {w: 500, h:200};
+    const svgMarg = {t: 20, r:20, b:50, l:20};
 
+    const stageDim = {
+      w: svgDim.w - svgMarg.r - svgMarg.l,
+      h: svgDim.h - svgMarg.t - svgMarg.b
+    };
 
-  // prepare data
-  const data = [
-    {name:'a', value:100},
-    {name:'b', value:200},
-    {name:'c', value:300},
-    {name:'d', value:400},
-  ];
-
-  let c = 30
-  while(c--) {
-    const datum = {name:chance.first(), value:chance.integer({min:0, max:500})}
-    data.push(datum)
-  }
-
-
-  // Chart container
-  const chart = d3.select('.chart')
-
-  chart.text(''); // remove text
-
-  chart
-    .styles( {
-      'width': svgDim.w+'px',
-      'height': svgDim.h+'px',
-      'outline': '1px solid red'
+    //@@ chart container
+    const chart =d3.select('.chart');
+    chart.text('');
+    chart
+      .styles({
+      width: svgDim.w+'px',
+      height: svgDim.h+'px',
+      outline: '1px solid red'
     });
 
-  // Legend
-  const legend = d3.select('.legend').style('position', 'absolute');
-
-
-  // Svg container
-  const svg =  chart.append('svg');
-  svg
-    .attr('width', svgDim.w)
-    .attr('height', svgDim.h)
-
-  // Stage
-  const stage = svg
-    .append('g');
-    stage.attr('transform', `translate(${svgMarg.l}, ${svgMarg.t})`)
-
-  // Stage background
-  const stageBg = stage.append('rect');
-  stageBg
-    .styles({
-      width: stageDim.w, height: stageDim.h,
-      fill: 'hsl(120, 30%, 90%)'
+    //@@ svg
+    const svg = chart.append('svg')
+    svg
+      .styles({
+      width: '100%',
+      height: '100%',
     });
 
-  //--------------------------------------
+    //@@ stage
+    const stage = svg.append('g')
+    stage
+      .attr('transform', `translate(${svgMarg.l},${svgMarg.t})`)
 
-  // Scales
-  const scaleX = d3.scaleBand()    // <---- introducing scaleBand
-    .domain(_(data).map('name').value())
-    .range([0, stageDim.w])
-        // _(data).map('name').map(scaleX).value()
+    //@@ stage background
+    const stageBackground = stage.append('rect');
+    stageBackground
+      .styles({
+        width: stageDim.w,
+        height: stageDim.h,
+        fill: 'hsl(120, 10%, 90%)'
+      })
 
-  scaleX.padding(.2);
+    // -------------------------------------------------------------------
 
-  const scaleY = d3.scaleLinear()
-    .domain([0, d3.max( _(data).map('value').value())])
-    .range([0, stageDim.h])
-        // _(data).map('value').map(scaleY).value()
+    //@@ Prepare data
+    const data = [
+      {name: 'a', value:100},
+      {name: 'b', value:200},
+      {name: 'c', value:300},
+      {name: 'd', value:400}
+    ];
 
-  // plotting area
-  const area = stage.append('g');
+    //@@ lots of data
+    let count = 20;
+    while(count--){
+      const datum = {
+        name: chance.first(),
+        value: chance.integer({min:0, max:1000}),
+      }
+      data.push(datum)
+    }
+    console.table(data)
 
-  // bind data
-  const bars = d3.select(area.node())
-    .selectAll('g')
-    .data(data)
-    .enter()
-    .append('g')
+    //@@ Scales X
 
-  // plot bars
-  bars
-    .attr('transform', d=>{
-      const y = stageDim.h - scaleY(d.value);
-      const x = scaleX(d.name);
-      return `translate(${x},${y})`
-    })
+      // const scaleX = d3.scaleBand().domain(['a', 'b', 'c', 'd']).range([0, stageDim.w]);
+      // console.log(_(data).map('name').value())
+      // console.log(_(data).map('name').map(scaleX).value())
 
-  // style bars
-  bars
-    .append('rect')
-    .attr('width', scaleX.bandwidth())
-    .attr('height', d=>scaleY(d.value))
-    .attr('fill', 'hsl(240, 70%, 80%)');
+      const scaleX = d3.scaleBand().domain(_(data).map('name').value()).range([0, stageDim.w]);
+      scaleX.padding(.2)
 
-  // mouse in/out
-  bars
-    .on('mouseover', d=>{
-      legend
-        .html(`<span>${d.name}: ${d.value}</span>`)
-        .style('display', 'block') ;
-    })
-    .on('mouseout', d=>{
-      legend
-        .html('')
-        .style('display', 'none') ;
-    });
 
-  // tooltips coordinate
-  svg.on('mousemove', ()=>{
-    const top = d3.event.layerY+10+'px';
-    const left = d3.event.layerX+10+'px';
-    legend.styles( { top, left })
-  });
+    //@@ Scales Y
 
-  // Axis
-  const areaAxisX = stage.append('g').attr('transform', `translate(0, ${stageDim.h})`);
-  const areaAxisY = stage.append('g');
+      // const scaleY = d3.scaleLinear().domain([0, 400]).range([0,stageDim.h]);
+      // console.log(_(data).map('value').value())
+      // console.log(_(data).map('value').map(scaleY).value())
 
-  // only y axis need scale
-  const scaleYaxis = d3.scaleLinear()
-    .domain([0, d3.max( _(data).map('value').value())])
-    .range([stageDim.h, 0]);
+      const scaleY = d3.scaleLinear().domain([0, d3.max(data, d=>d.value)]).range([0,stageDim.h]);
 
-  const axisY = d3.axisLeft(scaleYaxis).ticks(4);
-  const axisX = d3.axisBottom(scaleX)
 
-  areaAxisY.call(axisY)
-  areaAxisX.call(axisX)
-      .selectAll('text')
+    //@@ Plotting area
+      const area = stage.append('g');
+      area
+        .attr('note', 'ploating-area')
+
+
+    //@@ Join data;
+      const bars = d3.select(area.node())
+        .selectAll('rect')
+        .data(data)
+        .enter()
+        .append('rect');
+
+
+    //@@ Position bar
+      bars
+        .attr('transform', d=>{
+          const x = scaleX(d.name);
+          // const y = 0;
+          const y = stageDim.h - scaleY(d.value);
+          return `translate(${x}, ${y})`;
+        })
+        .styles({
+          width: scaleX.bandwidth(),
+          // stroke: 'red',
+          fill: 'hsl(4, 77%, 34%)'
+        }).
+        style('height', d=>scaleY(d.value))
+
+
+    //@@ tooltip
+    const tooltip = d3.select('.tooltip');
+    // tooltip.text('hello')
+
+    tooltip
+      .styles({
+        position: 'absolute'
+      })
+
+    //@@ tooltip folow mouse
+    svg
+      .on('mousemove', ()=>{
+        const top = d3.event.layerY+10+'px';
+        const left = d3.event.layerX+10+'px';
+        tooltip.styles({ top, left });
+      })
+
+
+    //@@ mouse event
+    bars
+      .on('mouseover', d=>{
+        tooltip
+          .text(d.name+': '+d.value)
+          .style('display', 'block')
+      })
+      .on('mouseout', ()=>{
+        tooltip
+          .text('')
+          .style('display', 'none')
+      })
+
+    //@@ axisX
+    const axisX = d3.axisBottom(scaleX)
+    const areaAxisX = stage.append('g')
+      .attr('note', 'area-axis-x')
+      .attr('transform', `translate(0,${stageDim.h})`)
+
+    areaAxisX.call(axisX)
+
+    //@@ axisY
+    const scaleAxisY = d3.scaleLinear().domain([d3.max(data, d=>d.value),0]).range([0,stageDim.h]);
+    const axisY = d3.axisLeft(scaleAxisY)
+      .ticks(3)
+    const areaAxisY = stage.append('g')
+      .attr('note', 'area-axis-y')
+
+    areaAxisY.call(axisY)
+
+    //@@ axisX tick styling
+    areaAxisX.selectAll('text')
       .style('text-anchor', 'end')
-      .attr('transform', 'translate(-7,5) rotate(-45) scale(.8)')
+      .attr('transform', 'scale(1) rotate(-45) translate(-9, -3)')
 
   </script>
 </body>
 
 </html>
+
+
