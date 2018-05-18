@@ -1,17 +1,21 @@
 const l = console.log
 d3.tsv('./data.tsv', data=>{
 
-  const result = d3
+  const groupByYear = d3
     .nest()
-    .key(function(d) { return d.year; })
-    .rollup( function(values, i) {
-      l(i)
+    .key(d => d.year)
+
+  l('groupByYear:')
+  l(groupByYear.entries(data))
+
+  const groupByYearCount_cardinality = groupByYear
+    .rollup( (values, i)=>{
+      // l(i)
       return d3.sum(values, d=>d.totalpop)
     })
-    .entries(data);
 
-  l(result)
-
+  l('groupByYear cardinality:')
+  l(groupByYearCount_cardinality.entries(data))
 })
 
 
